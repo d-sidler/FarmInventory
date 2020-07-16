@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="farmInventory" uuid="81b97e3c-a08a-4878-89cc-3cd0ef5225ed">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\dsidler\IdeaProjects\FarmInventory\resources\farmInventory.sqlite</jdbc-url>
+    </data-source>
+  </component>
+</project>
