@@ -13,17 +13,14 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+
+        Database.initializeTables();
+
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Farm Inventory");
         primaryStage.setScene(new Scene(root, 1280, 720));
         primaryStage.getIcons().add(new Image("/resources/icon.png"));
         primaryStage.setResizable(false);
-
-        //dbConnection.getConnection();
-        Database database = new Database();
-
-
-
 
         primaryStage.show();
 

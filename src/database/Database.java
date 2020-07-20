@@ -7,45 +7,39 @@ import java.sql.SQLException;
 
 public class Database {
 
-    public Database() {
-
-        try {
-            connect();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        initializeTables();
-    }
-
-    public Connection getConnection() {
-        return connection;
-    }
-
-    private Connection connection;
-
-    private void connect() throws SQLException {
+    public static Connection getConnection() throws SQLException {
 
         final String SQCONN = "jdbc:sqlite:farmInventory.sqlite";
 
         try {
             Class.forName("org.sqlite.JDBC");
-            this.connection = DriverManager.getConnection(SQCONN);
+            Connection connection = DriverManager.getConnection(SQCONN);
+            return connection;
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            return null;
         }
 
     }
 
-    private void initializeTables() {
+    public static void initializeTables() {
 
-        initializeCustomerTable();
-        initializeItemsTable();
-        initializeOrdersTable();
+        Connection connection = null;
+        try {
+            connection = getConnection();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (connection != null) {
+            initializeCustomerTable(connection);
+            initializeItemsTable(connection);
+            initializeOrdersTable(connection);
+        }
 
     }
 
-    private void initializeCustomerTable() {
+    private static void initializeCustomerTable(Connection connection) {
 
         // initialize Customer Table if not exists
         String sqlGenCustomer = "CREATE TABLE IF NOT EXISTS customers (" +
@@ -56,7 +50,7 @@ public class Database {
                 ");";
 
         try {
-            PreparedStatement st = this.connection.prepareStatement(sqlGenCustomer);
+            PreparedStatement st = connection.prepareStatement(sqlGenCustomer);
             st.execute();
         }
         catch (SQLException e) {
@@ -64,19 +58,18 @@ public class Database {
         }
     }
 
-    private void initializeItemsTable() {
+    private static void initializeItemsTable(Connection connection) {
 
         // initialize Items Table if not exists
         String sqlGenItem = "CREATE TABLE IF NOT EXISTS items (" +
                 "id            INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "itemName      TEXT," +
                 "price         DOUBLE," +
-                "priceUnit     TEXT," +
-                "pricePerUnit  TEXT" +
+                "priceUnit     TEXT" +
                 ");";
 
         try {
-            PreparedStatement st = this.connection.prepareStatement(sqlGenItem);
+            PreparedStatement st = connection.prepareStatement(sqlGenItem);
             st.execute();
         }
         catch (SQLException e) {
@@ -85,7 +78,7 @@ public class Database {
 
     }
 
-    private void initializeOrdersTable() {
+    private static void initializeOrdersTable(Connection connection) {
 
 
         // initialize order Table if not exists
@@ -98,7 +91,7 @@ public class Database {
                 ");";
 
         try {
-            PreparedStatement st = this.connection.prepareStatement(sqlGenOrder);
+            PreparedStatement st = connection.prepareStatement(sqlGenOrder);
             st.execute();
         }
         catch (SQLException e) {
@@ -107,6 +100,7 @@ public class Database {
 
 
     }
+
 
 
 }

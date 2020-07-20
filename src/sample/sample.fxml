@@ -45,7 +45,7 @@
                                           <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                        </VBox.margin>
                                        <children>
-                                          <ComboBox prefHeight="25.0" prefWidth="174.0" promptText="Ware">
+                                          <ComboBox fx:id="warenDropdown" editable="true" prefHeight="25.0" prefWidth="174.0" promptText="Ware">
                                              <HBox.margin>
                                                 <Insets top="15.0" />
                                              </HBox.margin>
@@ -72,7 +72,7 @@
                                           <Insets bottom="15.0" left="15.0" right="15.0" />
                                        </VBox.margin>
                                     </TableView>
-                                    <Button mnemonicParsing="false" onAction="#push_button" prefHeight="25.0" prefWidth="367.0" text="Bestellung Hinzufügen">
+                                    <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="367.0" text="Bestellung Hinzufügen">
                                        <VBox.margin>
                                           <Insets left="15.0" right="15.0" />
                                        </VBox.margin>
@@ -104,11 +104,6 @@
                                  </padding>
                                  <children>
                                     <HBox prefHeight="101.0" prefWidth="336.0" />
-                                    <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="347.0" text="Kunde Bearbeiten">
-                                       <VBox.margin>
-                                          <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                       </VBox.margin>
-                                    </Button>
                                     <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="345.0" text="Neuer Kunde">
                                        <VBox.margin>
                                           <Insets left="15.0" right="15.0" />
@@ -171,7 +166,7 @@
               <content>
                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <HBox layoutX="190.0" layoutY="127.0" prefHeight="691.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <HBox layoutX="326.0" layoutY="127.0" prefHeight="691.0" prefWidth="954.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <VBox prefHeight="691.0" prefWidth="376.0">
                                  <HBox.margin>
@@ -182,17 +177,12 @@
                                  </padding>
                                  <children>
                                     <HBox prefHeight="101.0" prefWidth="336.0" />
-                                    <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="445.0" text="Ware Bearbeiten">
-                                       <VBox.margin>
-                                          <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                       </VBox.margin>
-                                    </Button>
-                                    <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="463.0" text="Neue Ware">
+                                    <Button mnemonicParsing="false" onAction="#addItemButtonPressed" prefHeight="25.0" prefWidth="306.0" text="Neue Ware">
                                        <VBox.margin>
                                           <Insets left="15.0" right="15.0" />
                                        </VBox.margin>
                                     </Button>
-                                    <VBox alignment="TOP_CENTER" prefHeight="491.0" prefWidth="306.0" style="-fx-background-color: #d6e3d1;">
+                                    <VBox fx:id="itemBox" alignment="TOP_CENTER" prefHeight="491.0" prefWidth="306.0" style="-fx-background-color: #d6e3d1;">
                                        <VBox.margin>
                                           <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                        </VBox.margin>
@@ -202,7 +192,7 @@
                                                 <ImageView fx:id="item_placeholder_image" fitHeight="180.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true" />
                                              </children>
                                           </HBox>
-                                          <TextField promptText="Warenname">
+                                          <TextField fx:id="itemNameField" promptText="Warenname">
                                              <VBox.margin>
                                                 <Insets left="15.0" right="15.0" top="15.0" />
                                              </VBox.margin>
@@ -212,17 +202,17 @@
                                                 <Insets left="15.0" right="15.0" top="15.0" />
                                              </VBox.margin>
                                              <children>
-                                                <TextField prefHeight="25.0" prefWidth="133.0" promptText="Preis">
+                                                <TextField fx:id="itemPriceField" prefHeight="25.0" prefWidth="133.0" promptText="Preis">
                                                    <HBox.margin>
                                                       <Insets right="15.0" />
                                                    </HBox.margin>
                                                 </TextField>
-                                                <TextField disable="true" editable="false" prefHeight="25.0" prefWidth="62.0" text="CHF /">
+                                                <TextField disable="true" editable="false" prefHeight="25.0" prefWidth="62.0" text="Fr. / ">
                                                    <HBox.margin>
                                                       <Insets right="15.0" />
                                                    </HBox.margin>
                                                 </TextField>
-                                                <ComboBox prefHeight="25.0" prefWidth="91.0" promptText="Einheit" />
+                                                <ComboBox fx:id="itemUnitBox" prefHeight="25.0" prefWidth="91.0" promptText="Einheit" />
                                              </children>
                                           </HBox>
                                           <HBox prefHeight="100.0" prefWidth="200.0">
@@ -230,7 +220,7 @@
                                                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                              </VBox.margin>
                                           </HBox>
-                                          <Button fx:id="save_item_button" mnemonicParsing="false" prefHeight="25.0" prefWidth="433.0" text="Speichern">
+                                          <Button fx:id="itemSaveButton" mnemonicParsing="false" onAction="#editAndSaveItem" prefHeight="25.0" prefWidth="276.0" text="Speichern">
                                              <VBox.margin>
                                                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                              </VBox.margin>
@@ -238,11 +228,11 @@
                                        </children>
                                     </VBox>
                                  </children></VBox>
-                              <TableView blendMode="SRC_ATOP" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                              <TableView fx:id="itemTable" blendMode="SRC_ATOP" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                                 <columns>
-                                  <TableColumn prefWidth="150.0" text="Warenname" />
-                                  <TableColumn minWidth="0.0" prefWidth="175.0" text="Preis" />
-                                    <TableColumn prefWidth="150.0" text="Einheit" />
+                                  <TableColumn fx:id="item_column_name" prefWidth="150.0" text="Warenname" />
+                                  <TableColumn fx:id="item_column_price" minWidth="0.0" prefWidth="175.0" style="-fx-alignment: CENTER-RIGHT;" text="Preis" />
+                                    <TableColumn fx:id="item_column_unit" prefWidth="150.0" text="Einheit" />
 
                                 </columns>
                               </TableView>
