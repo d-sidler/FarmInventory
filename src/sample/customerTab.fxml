@@ -66,11 +66,11 @@
                             </VBox.margin>
                         </VBox>
                     </children></VBox>
-                <TableView prefHeight="691.0" prefWidth="852.0" HBox.hgrow="ALWAYS">
+                <TableView fx:id="customerTable" prefHeight="691.0" prefWidth="852.0" HBox.hgrow="ALWAYS">
                     <columns>
-                        <TableColumn prefWidth="230.0" text="Vorname" />
-                        <TableColumn prefWidth="217.0" text="Nachname" />
-                        <TableColumn prefWidth="272.0" text="E-Mail" />
+                        <TableColumn fx:id="customer_column_fname" prefWidth="230.0" text="Vorname" />
+                        <TableColumn fx:id="customer_column_lname" prefWidth="217.0" text="Nachname" />
+                        <TableColumn fx:id="customer_column_email" prefWidth="272.0" text="E-Mail" />
                     </columns>
                 </TableView>
             </children>

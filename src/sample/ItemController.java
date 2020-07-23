@@ -42,7 +42,7 @@ public class ItemController implements Initializable {
     // store item data
     private ObservableList<ItemData> itemData;
 
-    public ObservableList<ItemData> getItemData() {
+    protected ObservableList<ItemData> getItemData() {
         return itemData;
     }
 
@@ -134,6 +134,8 @@ public class ItemController implements Initializable {
             });
             return row;
         });
+
+        //itemTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
     private void loadItemData() {
