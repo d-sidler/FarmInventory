@@ -1,7 +1,10 @@
 package sample;
 
-
-import javafx.beans.Observable;
+import database.Database;
+import dialogs.Confirmation;
+import dialogs.Warning;
+import item.ItemData;
+import item.ItemUnit;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,138 +24,29 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-import database.Database;
-import item.ItemData;
-import item.ItemUnit;
-import dialogs.Warning;
-import dialogs.Confirmation;
+public class ItemController implements Initializable {
 
-
-
-
-
-
-
-public class Controller implements Initializable {
 
     Connection dbConnection;
 
-    @FXML
-    private ImageView user_placeholder_image;
+    // remembers, which item is currently displayed
+    private ItemData displayedItem = null;
+    private OperationMode itemMode = OperationMode.DISPLAY;
 
-
-
+    // define context menu components
     private ContextMenu contextMenu;
     private MenuItem displayMenu;
     private MenuItem editMenu;
     private MenuItem deleteMenu;
 
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-        // init connection
-        try {
-             dbConnection = Database.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        contextMenu = new ContextMenu();
-        displayMenu = new MenuItem("Anzeigen");
-        editMenu = new MenuItem("Bearbeiten");
-        deleteMenu = new MenuItem("Löschen");
-        contextMenu.getItems().addAll(displayMenu, editMenu, deleteMenu);
-
-        user_placeholder_image.setImage(new Image("/resources/picture_placeholder.png"));
-        item_placeholder_image.setImage(new Image("/resources/picture_placeholder.png"));
-
-        Image image = new Image(getClass().getResourceAsStream("/resources/rightarrow.png"));
-
-        // TODO: set fancy button icons
-        //save_item_button.setGraphic(new ImageView(image));
-        //save_item_button.setContentDisplay(ContentDisplay.RIGHT);
-        //save_item_button.setTextAlignment(TextAlignment.LEFT);
-        //save_item_button.setGraphicTextGap(20);
-
-        itemBox.setVisible(false);
-
-        itemUnitBox.setItems( FXCollections.observableArrayList( ItemUnit.values()) );
-        loadItemData();
-
-
-        // TODO: set context menu upon right click on table row
-        itemTable.setRowFactory( tv -> {
-            TableRow<ItemData> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if(event.getClickCount() == 2 ) {
-                    if (row.isEmpty()) {
-                        displayItem(null);
-                    } else {
-                        ItemData rowData = row.getItem();
-                        displayItem(rowData);
-                    }
-                }
-                if(event.getButton() == MouseButton.SECONDARY) {
-                    if (! row.isEmpty()) {
-
-                        ItemData rowData = row.getItem();
-
-                        //displayMenu.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> System.out.println("Clicked Display"));
-                        displayMenu.setOnAction(e->displayItem(rowData));
-                        editMenu.setOnAction(e-> {
-                            displayItem(rowData);
-                            setItemOperationMode(OperationMode.EDIT);
-                        });
-                        deleteMenu.setOnAction(e-> {
-                            deleteItem(rowData);
-                        });
-
-                        contextMenu.show(itemTable, event.getScreenX(), event.getScreenY());
-
-                        //displayItem(rowData);
-                    }
-                }
-            });
-            return row;
-
-        });
-
-
-
-
-        /*
-        itemTable.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent t) {
-                if (t.getButton() == MouseButton.SECONDARY) {
-                    cm.show(itemTable, t.getScreenX(), t.getScreenY());
-                }
-            }
-        });
-
-         */
-
-        /*
-        itemTable.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.getButton() == MouseButton.PRIMARY) {
-                    if (event.getClickCount() == 2) {
-                        System.out.println("clicked");
-                    }
-                }
-            }
-        });
-         */
-
-    }
-
-
-    // itemController
-
+    // store item data
     private ObservableList<ItemData> itemData;
 
+    public ObservableList<ItemData> getItemData() {
+        return itemData;
+    }
+
+    // GUI components
     @FXML
     private ImageView item_placeholder_image;
 
@@ -184,9 +78,63 @@ public class Controller implements Initializable {
     private Button itemSaveButton;
 
 
-    // remembers, which item is currently displayed
-    private ItemData displayedItem = null;
-    private OperationMode itemMode = OperationMode.DISPLAY;
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        // init connection
+        try {
+            dbConnection = Database.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        contextMenu = new ContextMenu();
+        displayMenu = new MenuItem("Anzeigen");
+        editMenu = new MenuItem("Bearbeiten");
+        deleteMenu = new MenuItem("Löschen");
+        contextMenu.getItems().addAll(displayMenu, editMenu, deleteMenu);
+
+        itemBox.setVisible(false);
+
+        itemUnitBox.setItems( FXCollections.observableArrayList( ItemUnit.values()) );
+        loadItemData();
+
+
+        item_placeholder_image.setImage(new Image("/resources/picture_placeholder.png"));
+
+        // TODO: set context menu upon right click on table row
+        itemTable.setRowFactory( tv -> {
+            TableRow<ItemData> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if(event.getClickCount() == 2 ) {
+                    if (row.isEmpty()) {
+                        displayItem(null);
+                    } else {
+                        ItemData rowData = row.getItem();
+                        displayItem(rowData);
+                    }
+                }
+                if(event.getButton() == MouseButton.SECONDARY) {
+                    if (! row.isEmpty()) {
+
+                        ItemData rowData = row.getItem();
+
+                        displayMenu.setOnAction(e->displayItem(rowData));
+                        editMenu.setOnAction(e-> {
+                            displayItem(rowData);
+                            setItemOperationMode(OperationMode.EDIT);
+                        });
+                        deleteMenu.setOnAction(e-> {
+                            deleteItem(rowData);
+                        });
+
+                        contextMenu.show(itemTable, event.getScreenX(), event.getScreenY());
+                    }
+                }
+            });
+            return row;
+        });
+    }
 
     private void loadItemData() {
         this.itemData = FXCollections.observableArrayList();
@@ -220,10 +168,6 @@ public class Controller implements Initializable {
 
         this.itemTable.setItems(null);
         this.itemTable.setItems(itemData);
-
-        //warenDropdown.setItems(itemData);
-
-
 
     }
 
@@ -433,9 +377,4 @@ public class Controller implements Initializable {
 
         return exists;
     }
-
-
-
-
 }
-

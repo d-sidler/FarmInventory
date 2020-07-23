@@ -16,7 +16,9 @@ public class Main extends Application {
 
         Database.initializeTables();
 
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("mainWindow.fxml"));
+
         primaryStage.setTitle("Farm Inventory");
         primaryStage.setScene(new Scene(root, 1280, 720));
         primaryStage.getIcons().add(new Image("/resources/icon.png"));

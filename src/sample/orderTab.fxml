@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane minHeight="0.0"
+            minWidth="0.0"
+            prefHeight="691.0"
+            prefWidth="1280.0"
+            xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="sample.OrderController">
+    <children>
+        <HBox layoutX="292.0"
+              layoutY="95.0"
+              prefHeight="691.0"
+              prefWidth="1280.0"
+              AnchorPane.bottomAnchor="0.0"
+              AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0"
+              AnchorPane.topAnchor="0.0">
+            <children>
+                <VBox prefHeight="691.0" prefWidth="376.0">
+                    <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                    </padding>
+                    <children>
+                        <DatePicker prefHeight="25.0" prefWidth="421.0" promptText="Ernte Datum">
+                            <VBox.margin>
+                                <Insets bottom="15.0" left="15.0" right="15.0" />
+                            </VBox.margin>
+                        </DatePicker>
+                        <ComboBox prefHeight="25.0" prefWidth="472.0" promptText="Kunde">
+                            <VBox.margin>
+                                <Insets left="15.0" right="15.0" />
+                            </VBox.margin>
+                        </ComboBox>
+                        <HBox prefHeight="30.0" prefWidth="306.0">
+                            <VBox.margin>
+                                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                            </VBox.margin>
+                            <children>
+                                <ComboBox fx:id="warenDropdown" editable="true" prefHeight="25.0" prefWidth="174.0" promptText="Ware">
+                                    <HBox.margin>
+                                        <Insets top="15.0" />
+                                    </HBox.margin>
+                                </ComboBox>
+                                <TextField prefHeight="25.0" prefWidth="89.0" promptText="STK">
+                                    <HBox.margin>
+                                        <Insets top="15.0" />
+                                    </HBox.margin>
+                                </TextField>
+                                <HBox prefHeight="30.0" prefWidth="27.0" HBox.hgrow="ALWAYS" />
+                                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="+">
+                                    <HBox.margin>
+                                        <Insets top="15.0" />
+                                    </HBox.margin>
+                                </Button>
+                            </children>
+                        </HBox>
+                        <TableView prefHeight="411.0" prefWidth="306.0">
+                            <columns>
+                                <TableColumn prefWidth="173.0" text="Ware" />
+                                <TableColumn prefWidth="132.0" text="Menge" />
+                            </columns>
+                            <VBox.margin>
+                                <Insets bottom="15.0" left="15.0" right="15.0" />
+                            </VBox.margin>
+                        </TableView>
+                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="367.0" text="Bestellung Hinzufügen">
+                            <VBox.margin>
+                                <Insets left="15.0" right="15.0" />
+                            </VBox.margin>
+                        </Button>
+                    </children></VBox>
+                <TableView prefHeight="691.0" prefWidth="800.0" HBox.hgrow="ALWAYS">
+                    <columns>
+                        <TableColumn prefWidth="208.0" text="Kunde" />
+                        <TableColumn minWidth="0.0" prefWidth="210.0" text="Ware" />
+                        <TableColumn prefWidth="139.0" text="Menge" />
+                        <TableColumn minWidth="0.0" prefWidth="158.0" text="Bestelldatum" />
+                        <TableColumn prefWidth="188.0" text="Erntedatum" />
+                    </columns>
+                </TableView>
+            </children>
+        </HBox>
+    </children></AnchorPane>
+
+
