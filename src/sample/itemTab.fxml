@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+
+
+<AnchorPane minHeight="0.0"
+            minWidth="0.0"
+            prefHeight="691.0"
+            prefWidth="1280.0"
+            xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="sample.ItemController">
+    <children>
+        <HBox layoutX="326.0" layoutY="127.0" prefHeight="691.0" prefWidth="954.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <VBox prefHeight="691.0" prefWidth="376.0">
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin>
+                    <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                    </padding>
+                    <children>
+                        <HBox prefHeight="101.0" prefWidth="336.0" />
+                        <Button mnemonicParsing="false" onAction="#addItemButtonPressed" prefHeight="25.0" prefWidth="306.0" text="Neue Ware">
+                            <VBox.margin>
+                                <Insets left="15.0" right="15.0" />
+                            </VBox.margin>
+                        </Button>
+                        <VBox fx:id="itemBox" alignment="TOP_CENTER" prefHeight="491.0" prefWidth="306.0" style="-fx-background-color: #d6e3d1;">
+                            <VBox.margin>
+                                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                            </VBox.margin>
+                            <children>
+                                <HBox alignment="CENTER" prefHeight="233.0" prefWidth="200.0">
+                                    <children>
+                                        <ImageView fx:id="item_placeholder_image" fitHeight="180.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true" />
+                                    </children>
+                                </HBox>
+                                <TextField fx:id="itemNameField" promptText="Warenname">
+                                    <VBox.margin>
+                                        <Insets left="15.0" right="15.0" top="15.0" />
+                                    </VBox.margin>
+                                </TextField>
+                                <HBox prefHeight="35.0" prefWidth="276.0">
+                                    <VBox.margin>
+                                        <Insets left="15.0" right="15.0" top="15.0" />
+                                    </VBox.margin>
+                                    <children>
+                                        <TextField fx:id="itemPriceField" prefHeight="25.0" prefWidth="133.0" promptText="Preis">
+                                            <HBox.margin>
+                                                <Insets right="15.0" />
+                                            </HBox.margin>
+                                        </TextField>
+                                        <TextField disable="true" editable="false" prefHeight="25.0" prefWidth="62.0" text="Fr. / ">
+                                            <HBox.margin>
+                                                <Insets right="15.0" />
+                                            </HBox.margin>
+                                        </TextField>
+                                        <ComboBox fx:id="itemUnitBox" prefHeight="25.0" prefWidth="91.0" promptText="Einheit" />
+                                    </children>
+                                </HBox>
+                                <HBox prefHeight="100.0" prefWidth="200.0">
+                                    <VBox.margin>
+                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                    </VBox.margin>
+                                </HBox>
+                                <Button fx:id="itemSaveButton" mnemonicParsing="false" onAction="#editAndSaveItem" prefHeight="25.0" prefWidth="276.0" text="Speichern">
+                                    <VBox.margin>
+                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                    </VBox.margin>
+                                </Button>
+                            </children>
+                        </VBox>
+                    </children></VBox>
+                <TableView fx:id="itemTable" blendMode="SRC_ATOP" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="item_column_name" prefWidth="150.0" text="Warenname" />
+                        <TableColumn fx:id="item_column_price" minWidth="0.0" prefWidth="175.0" style="-fx-alignment: CENTER-RIGHT;" text="Preis" />
+                        <TableColumn fx:id="item_column_unit" prefWidth="150.0" text="Einheit" />
+
+                    </columns>
+                </TableView>
+            </children>
+        </HBox>
+    </children>
+</AnchorPane>
+

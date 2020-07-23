@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane minHeight="0.0"
-            minWidth="0.0"
-            prefHeight="691.0"
-            prefWidth="1280.0"
-            xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="sample.CustomerController">
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="691.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.CustomerController">
     <children>
         <HBox layoutX="103.0" layoutY="114.0" prefHeight="691.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -21,12 +20,12 @@
                     </padding>
                     <children>
                         <HBox prefHeight="101.0" prefWidth="336.0" />
-                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="345.0" text="Neuer Kunde">
+                        <Button mnemonicParsing="false" onAction="#addCustomerButtonPressed" prefHeight="25.0" prefWidth="345.0" text="Neuer Kunde">
                             <VBox.margin>
                                 <Insets left="15.0" right="15.0" />
                             </VBox.margin>
                         </Button>
-                        <VBox alignment="TOP_CENTER" prefHeight="491.0" prefWidth="306.0" style="-fx-background-color: #f0dbd3;">
+                        <VBox fx:id="customerBox" alignment="TOP_CENTER" prefHeight="491.0" prefWidth="306.0" style="-fx-background-color: #f0dbd3;">
                             <children>
                                 <HBox alignment="CENTER" prefHeight="233.0" prefWidth="306.0">
                                     <children>
@@ -38,15 +37,15 @@
                                         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                     </VBox.margin>
                                     <children>
-                                        <TextField promptText="Vorname">
+                                        <TextField fx:id="customerFnameField" promptText="Vorname">
                                             <HBox.margin>
                                                 <Insets right="15.0" />
                                             </HBox.margin>
                                         </TextField>
-                                        <TextField promptText="Nachname" />
+                                        <TextField fx:id="customerLnameField" promptText="Nachname" />
                                     </children>
                                 </HBox>
-                                <TextField promptText="E-Mail">
+                                <TextField fx:id="customerEmailField" promptText="E-Mail">
                                     <VBox.margin>
                                         <Insets left="15.0" right="15.0" />
                                     </VBox.margin>
@@ -56,7 +55,7 @@
                                         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                     </VBox.margin>
                                 </HBox>
-                                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="347.0" text="Speichern">
+                                <Button fx:id="customerSaveButton" mnemonicParsing="false" onAction="#editAndSaveCustomer" prefHeight="25.0" prefWidth="347.0" text="Speichern">
                                     <VBox.margin>
                                         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                     </VBox.margin>
@@ -78,4 +77,3 @@
         </HBox>
     </children>
 </AnchorPane>
-
