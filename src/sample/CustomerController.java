@@ -4,8 +4,6 @@ import database.Database;
 import dialogs.Confirmation;
 import dialogs.Warning;
 import customer.CustomerData;
-import item.ItemData;
-import item.ItemUnit;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -321,7 +319,7 @@ public class CustomerController implements Initializable {
         }
 
         try {
-            String sql = "DELETE FROM items WHERE id = ?";
+            String sql = "DELETE FROM customers WHERE id = ?";
             PreparedStatement st = dbConnection.prepareStatement(sql);
             st.setInt(1, cData.id().getValue());
             st.execute();

@@ -83,11 +83,13 @@ public class Database {
 
         // initialize order Table if not exists
         String sqlGenOrder = "CREATE TABLE IF NOT EXISTS orders (" +
-                "id            INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "orderItemID   INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "orderID       INTEGER," +
                 "customerID    INTEGER," +
                 "itemID        INTEGER," +
-                "orderDate     TEXT," +
-                "harvestDate   TEXT" +
+                "itemAmount    DOUBLE," +
+                "orderDate     DATE," +
+                "harvestDate   DATE" +
                 ");";
 
         try {

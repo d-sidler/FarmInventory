@@ -7,5 +7,11 @@
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:C:\Users\dsidler\IdeaProjects\FarmInventory\resources\farmInventory.sqlite</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="farmInventory [2]" uuid="e4c4db9c-2144-4f8c-9d60-8b89d208beb2">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\dsidler\IdeaProjects\FarmInventory\farmInventory.sqlite</jdbc-url>
+    </data-source>
   </component>
 </project>
