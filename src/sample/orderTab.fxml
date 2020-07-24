@@ -89,8 +89,8 @@
                 <TreeTableColumn fx:id="orderTableCustomer" prefWidth="168.0" text="Kunde" />
                 <TreeTableColumn fx:id="orderTableItem" prefWidth="147.0" text="Ware" />
                   <TreeTableColumn fx:id="orderTableAmount" prefWidth="186.0" text="Menge" />
-                  <TreeTableColumn fx:id="orderTableOrderDate" prefWidth="180.0" text="Bestelldatum" />
-                  <TreeTableColumn fx:id="orderTableDeliveryDate" prefWidth="223.0" text="Lieferdatum" />
+                  <TreeTableColumn fx:id="orderTableOrderDate" prefWidth="194.0" text="Bestelldatum" />
+                  <TreeTableColumn fx:id="orderTableDeliveryDate" prefWidth="209.0" text="Lieferdatum" />
               </columns>
             </TreeTableView>
             </children>

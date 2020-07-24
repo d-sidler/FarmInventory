@@ -1,5 +1,6 @@
 package sample;
 
+import com.sun.source.tree.Tree;
 import customer.CustomerData;
 import dialogs.Warning;
 import item.ItemData;
@@ -19,8 +20,9 @@ import java.net.URL;
 import java.sql.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
-
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
@@ -45,6 +47,7 @@ public class OrderController implements Initializable {
     private HashMap<Integer, CustomerData> customerDataMap = new HashMap<>();
 
     private ObservableList<OrderData> orderData;
+    private List<Integer> orderIDs;
 
     @FXML
     private ComboBox<ItemData> warenDropdown;
@@ -373,13 +376,44 @@ public class OrderController implements Initializable {
                 e.printStackTrace();
             }
 
+            try {
+                String sql = "SELECT DISTINCT orderID FROM orders";
+                ResultSet rs = dbConnection.createStatement().executeQuery(sql);
+                this.orderIDs = new ArrayList<>();
+
+                while (rs.next()) {
+                    this.orderIDs.add(rs.getInt(1));
+                }
+                System.out.println(orderIDs);
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+
             TreeItem<OrderData> rootOrder = new TreeItem<>(
                     new OrderData(1,1,1,0,0., Date.valueOf(LocalDate.now()),Date.valueOf(LocalDate.now()))
             );
 
-            for (OrderData o : orderData) {
-                rootOrder.getChildren().add(new TreeItem<>(o));
+            //List<TreeItem<OrderData>> separateOrders = new ArrayList<>();
+            HashMap<Integer, TreeItem<OrderData>> separateOrders = new HashMap<>();
+
+            for (int i : orderIDs) {
+                Date dateTmp =  Date.valueOf(LocalDate.now());
+                OrderData tmp = new OrderData(1, 1, 1, 0, 0., dateTmp, dateTmp);
+                TreeItem<OrderData> tmpItem = new TreeItem<>(tmp);
+                separateOrders.put(i, tmpItem);
+                rootOrder.getChildren().add(tmpItem);
             }
+
+
+            for (OrderData o : orderData) {
+                int newID = o.getOrderID().get();
+
+                separateOrders.get(newID).getChildren().add(new TreeItem<>(o));
+            }
+
+
+
 
 
         orderTableCustomer.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<OrderData, String>, ObservableValue<String>>() {
@@ -443,7 +477,7 @@ public class OrderController implements Initializable {
         });
 
         orderTable.setRoot(rootOrder);
-        orderTable.setShowRoot(true);
+        orderTable.setShowRoot(false);
 
     }
 
