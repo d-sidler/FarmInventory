@@ -5,26 +5,32 @@
 <?import javafx.scene.layout.BorderPane?>
 
 
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Menu?>
 <BorderPane prefHeight="720.0"
             prefWidth="1280.0"
             xmlns="http://javafx.com/javafx/11.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="sample.MainWindowController">
+
     <center>
         <TabPane prefHeight="720.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
-            <Tab closable="false" text="Bestellung">
+            <Tab closable="false"
+                 fx:id="orderTab"
+                 text="Bestellung"
+                 style="-fx-background-color: #37647d; -fx-border-color: #37647d; -fx-text-base-color: #ffffff; -fx-font-weight: bold">
                 <content>
-                    <fx:include fx:id="orderTab" source="orderTab.fxml"/>
+                    <fx:include source="orderTab2.fxml"/>
                 </content>
             </Tab>
-            <Tab closable="false" text="Kunden">
+            <Tab closable="false" fx:id="customerTab" text="Kunden">
                 <content>
-                    <fx:include fx:id="customerTab" source="customerTab.fxml"/>
+                    <fx:include  source="customerTab.fxml"/>
                 </content>
             </Tab>
-            <Tab closable="false" text="Waren">
+            <Tab closable="false" fx:id="itemTab" text="Waren">
                 <content>
-                    <fx:include fx:id="itemTab" source="itemTab.fxml"/>
+                    <fx:include  source="itemTab.fxml"/>
                 </content>
             </Tab>
         </TabPane>

@@ -5,6 +5,9 @@ import dialogs.Confirmation;
 import dialogs.Warning;
 import item.ItemData;
 import item.ItemUnit;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ObservableBooleanValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,6 +20,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;
 
+import javax.xml.crypto.Data;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,7 +31,8 @@ import java.util.ResourceBundle;
 public class ItemController implements Initializable {
 
 
-    Connection dbConnection;
+    protected BooleanProperty itemsChanged = new SimpleBooleanProperty(false);
+
 
     // remembers, which item is currently displayed
     private ItemData displayedItem = null;
@@ -80,13 +85,6 @@ public class ItemController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        // init connection
-        try {
-            dbConnection = Database.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
         contextMenu = new ContextMenu();
         displayMenu = new MenuItem("Anzeigen");
@@ -142,14 +140,17 @@ public class ItemController implements Initializable {
         this.itemData = FXCollections.observableArrayList();
 
         try {
+            Connection dbConnection = Database.getConnection();
+
             String sql = "SELECT * FROM items";
             ResultSet rs = dbConnection.createStatement().executeQuery(sql);
             while (rs.next()) {
                 this.itemData.add(new ItemData(rs.getInt(1), rs.getString(2),
                         rs.getDouble(3), rs.getString(4)));
             }
+            dbConnection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Error loading Item Data");
         }
 
         this.item_column_name.setCellValueFactory(new PropertyValueFactory<ItemData, String>("itemName"));
@@ -263,6 +264,8 @@ public class ItemController implements Initializable {
 
 
         try {
+            Connection dbConnection = Database.getConnection();
+
             String sql = "UPDATE items " +
                     "SET itemName = ?, price = ?, priceUnit = ? " +
                     "WHERE id = ?";
@@ -273,12 +276,15 @@ public class ItemController implements Initializable {
             st.setInt(4, displayedItem.id().get());
 
             st.execute();
+
+            dbConnection.close();
         }
         catch (SQLException exception) {
             exception.printStackTrace();
         }
 
         loadItemData();
+        itemsChanged.setValue(true);
 
         setItemOperationMode(OperationMode.DISPLAY);
     }
@@ -301,13 +307,15 @@ public class ItemController implements Initializable {
         }
 
         try {
+            Connection dbConnection = Database.getConnection();
+
             String sql = "INSERT INTO items(itemName, price, priceUnit)  VALUES (?,?,?)";
             PreparedStatement st = dbConnection.prepareStatement(sql);
             st.setString(1, insertItemName);
             st.setDouble(2,insertItemPrice);
             st.setString(3, this.itemUnitBox.getValue().toString());
-
             st.execute();
+            dbConnection.close();
         }
         catch (SQLException exception) {
             exception.printStackTrace();
@@ -315,6 +323,8 @@ public class ItemController implements Initializable {
 
 
         try {
+            Connection dbConnection = Database.getConnection();
+
             String sql = "SELECT * FROM items WHERE itemName = ?";
             PreparedStatement st = dbConnection.prepareStatement(sql);
             st.setString(1, itemNameField.getText());
@@ -323,6 +333,7 @@ public class ItemController implements Initializable {
             displayedItem = new ItemData(rs.getInt(1), rs.getString(2),
                     rs.getDouble(3), rs.getString(4));
 
+            dbConnection.close();
         }
         catch (SQLException exception) {
             exception.printStackTrace();
@@ -331,12 +342,12 @@ public class ItemController implements Initializable {
 
 
         loadItemData();
+        itemsChanged.setValue(true);
 
 
         setItemOperationMode(OperationMode.DISPLAY);
 
         // TODO: check for double parsing errors
-
     }
 
     void deleteItem(ItemData itemData) {
@@ -346,10 +357,13 @@ public class ItemController implements Initializable {
         }
 
         try {
+            Connection dbConnection = Database.getConnection();
+
             String sql = "DELETE FROM items WHERE id = ?";
             PreparedStatement st = dbConnection.prepareStatement(sql);
             st.setInt(1, itemData.id().getValue());
             st.execute();
+            dbConnection.close();
 
         }
         catch (SQLException exception) {
@@ -357,6 +371,7 @@ public class ItemController implements Initializable {
         }
 
         loadItemData();
+        itemsChanged.setValue(true);
     }
 
     boolean itemNameExists(String name) {
@@ -364,6 +379,8 @@ public class ItemController implements Initializable {
         boolean exists = false;
 
         try {
+            Connection dbConnection = Database.getConnection();
+
             String sql = "SELECT id FROM items WHERE LOWER(itemName) LIKE LOWER(?)";
             PreparedStatement st = dbConnection.prepareStatement(sql);
             st.setString(1,name);
@@ -371,6 +388,7 @@ public class ItemController implements Initializable {
             if (rs.next()) {
                 exists = true;
             }
+            dbConnection.close();
 
         }
         catch (SQLException exception) {

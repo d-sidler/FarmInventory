@@ -34,6 +34,7 @@ public class Database {
         if (connection != null) {
             initializeCustomerTable(connection);
             initializeItemsTable(connection);
+            initializeOrderItemTable(connection);
             initializeOrdersTable(connection);
         }
 
@@ -78,18 +79,34 @@ public class Database {
 
     }
 
+    private static void initializeOrderItemTable(Connection connection) {
+
+        String sqlGenOrderItem = "CREATE TABLE IF NOT EXISTS orderItems (" +
+                "orderItemID  INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "orderID      INTEGER," +
+                "itemID       INTEGER," +
+                "itemAmount   DOUBLE" +
+                ");";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sqlGenOrderItem);
+            st.execute();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+
+    }
+
     private static void initializeOrdersTable(Connection connection) {
 
 
         // initialize order Table if not exists
         String sqlGenOrder = "CREATE TABLE IF NOT EXISTS orders (" +
-                "orderItemID   INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "orderID       INTEGER," +
+                "orderID       INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "customerID    INTEGER," +
-                "itemID        INTEGER," +
-                "itemAmount    DOUBLE," +
                 "orderDate     DATE," +
-                "harvestDate   DATE" +
+                "harvestDate   DATE," +
+                "finished      BOOLEAN" +
                 ");";
 
         try {

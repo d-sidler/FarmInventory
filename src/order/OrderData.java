@@ -14,8 +14,9 @@ OrderData {
     private DoubleProperty itemAmount;
     private ObjectProperty<Date> orderDate;
     private ObjectProperty<Date> harvestDate;
+    private BooleanProperty finished;
 
-    public OrderData(Integer orderItemID, Integer orderID, Integer customerID, Integer itemID, Double itemAmount, Date orderDate, Date harvestDate) {
+    public OrderData(Integer orderItemID, Integer orderID, Integer customerID, Integer itemID, Double itemAmount, Date orderDate, Date harvestDate, boolean finished) {
         this.orderItemID = new SimpleIntegerProperty(orderItemID);
         this.orderID = new SimpleIntegerProperty(orderID);
         this.customerID = new SimpleIntegerProperty(customerID);
@@ -23,6 +24,7 @@ OrderData {
         this.itemAmount = new SimpleDoubleProperty(itemAmount);
         this.orderDate = new SimpleObjectProperty<>(orderDate);
         this.harvestDate = new SimpleObjectProperty<>(harvestDate);
+        this.finished = new SimpleBooleanProperty(finished);
     }
 
     public IntegerProperty getOrderItemID() {
@@ -34,6 +36,7 @@ OrderData {
     public DoubleProperty getItemAmount() {return itemAmount;}
     public ObjectProperty<Date> getOrderDate() {return orderDate;}
     public ObjectProperty<Date> getHarvestDate() {return harvestDate;}
+    public BooleanProperty getFinished() {return finished;}
 
 
 

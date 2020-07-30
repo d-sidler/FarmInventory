@@ -4,6 +4,8 @@ import database.Database;
 import dialogs.Confirmation;
 import dialogs.Warning;
 import customer.CustomerData;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;
 
+import javax.xml.crypto.Data;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,7 +28,7 @@ import java.util.ResourceBundle;
 
 public class CustomerController implements Initializable {
 
-    Connection dbConnection;
+    protected BooleanProperty customersChanged = new SimpleBooleanProperty(false);
 
     // remembers, which item is currently displayed
     private CustomerData displayedCustomer = null;
@@ -77,13 +80,6 @@ public class CustomerController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        // init connection
-        try {
-            dbConnection = Database.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         contextMenu = new ContextMenu();
         displayMenu = new MenuItem("Anzeigen");
         editMenu = new MenuItem("Bearbeiten");
@@ -134,26 +130,31 @@ public class CustomerController implements Initializable {
     }
 
     private void loadCustomerData() {
-        this.customerData = FXCollections.observableArrayList();
 
         try {
+            Connection dbConnection = Database.getConnection();
+            this.customerData = FXCollections.observableArrayList();
+
             String sql = "SELECT * FROM customers";
             ResultSet rs = dbConnection.createStatement().executeQuery(sql);
             while (rs.next()) {
                 this.customerData.add(new CustomerData(rs.getInt(1), rs.getString(2),
                         rs.getString(3), rs.getString(4)));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+
+
+            this.customer_column_fname.setCellValueFactory(new PropertyValueFactory<CustomerData, String>("firstName"));
+            this.customer_column_lname.setCellValueFactory(new PropertyValueFactory<CustomerData, String>("lastName"));
+            this.customer_column_email.setCellValueFactory(new PropertyValueFactory<CustomerData, String>("email"));
+
+            this.customerTable.setItems(null);
+            this.customerTable.setItems(customerData);
+            dbConnection.close();
+
         }
-
-        this.customer_column_fname.setCellValueFactory(new PropertyValueFactory<CustomerData, String>("firstName"));
-        this.customer_column_lname.setCellValueFactory(new PropertyValueFactory<CustomerData, String>("lastName"));
-        this.customer_column_email.setCellValueFactory(new PropertyValueFactory<CustomerData, String>("email"));
-
-        this.customerTable.setItems(null);
-        this.customerTable.setItems(customerData);
-
+        catch (SQLException e) {
+            System.out.println("Error Loading Customer Database");
+        }
     }
 
 
@@ -241,6 +242,8 @@ public class CustomerController implements Initializable {
     void editCustomer(CustomerData customerData) {
 
         try {
+            Connection dbConnection = Database.getConnection();
+
             String sql = "UPDATE customers " +
                     "SET firstName = ?, lastName = ?, email = ? " +
                     "WHERE id = ?";
@@ -252,12 +255,15 @@ public class CustomerController implements Initializable {
             st.setInt(4, displayedCustomer.id().get());
 
             st.execute();
+            dbConnection.close();
         }
         catch (SQLException exception) {
             exception.printStackTrace();
         }
 
+
         loadCustomerData();
+        customersChanged.setValue(true);
 
         setCustomerOperationMode(OperationMode.DISPLAY);
     }
@@ -274,6 +280,7 @@ public class CustomerController implements Initializable {
         }
 
         try {
+            Connection dbConnection = Database.getConnection();
             String sql = "INSERT INTO customers(firstName, lastName, email)  VALUES (?,?,?)";
             PreparedStatement st = dbConnection.prepareStatement(sql);
             st.setString(1, insertCustomerFname);
@@ -281,6 +288,7 @@ public class CustomerController implements Initializable {
             st.setString(3, insertCustomerEmail);
 
             st.execute();
+            dbConnection.close();
         }
         catch (SQLException exception) {
             exception.printStackTrace();
@@ -288,6 +296,7 @@ public class CustomerController implements Initializable {
 
 
         try {
+            Connection dbConnection = Database.getConnection();
             String sql = "SELECT * FROM customers WHERE LOWER(firstName) = LOWER(?) AND LOWER(lastName) = LOWER(?)";
             PreparedStatement st = dbConnection.prepareStatement(sql);
             st.setString(1, insertCustomerFname);
@@ -297,12 +306,14 @@ public class CustomerController implements Initializable {
             displayedCustomer = new CustomerData(rs.getInt(1), rs.getString(2),
                     rs.getString(3), rs.getString(4));
 
+            dbConnection.close();
         }
         catch (SQLException exception) {
             exception.printStackTrace();
         }
 
         loadCustomerData();
+        customersChanged.setValue(true);
 
         setCustomerOperationMode(OperationMode.DISPLAY);
 
@@ -319,17 +330,19 @@ public class CustomerController implements Initializable {
         }
 
         try {
+            Connection dbConnection = Database.getConnection();
             String sql = "DELETE FROM customers WHERE id = ?";
             PreparedStatement st = dbConnection.prepareStatement(sql);
             st.setInt(1, cData.id().getValue());
             st.execute();
-
+            dbConnection.close();
         }
         catch (SQLException exception) {
             exception.printStackTrace();
         }
 
         loadCustomerData();
+        customersChanged.setValue(true);
     }
 
 
@@ -338,6 +351,7 @@ public class CustomerController implements Initializable {
         boolean exists = false;
 
         try {
+            Connection dbConnection = Database.getConnection();
             String sql = "SELECT id FROM customers WHERE LOWER(firstName) LIKE LOWER(?) and lower(lastName) LIKE LOWER(?)";
             PreparedStatement st = dbConnection.prepareStatement(sql);
             st.setString(1,fname);
@@ -346,7 +360,7 @@ public class CustomerController implements Initializable {
             if (rs.next()) {
                 exists = true;
             }
-
+            dbConnection.close();
         }
         catch (SQLException exception) {
             exception.printStackTrace();

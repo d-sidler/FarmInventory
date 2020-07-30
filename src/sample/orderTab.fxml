@@ -83,6 +83,11 @@
                               </Button>
                      </children>
                   </VBox>
+                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="375.0" text="Ansichten">
+                     <VBox.margin>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                     </VBox.margin>
+                  </Button>
                     </children></VBox>
             <TreeTableView fx:id="orderTable" prefHeight="691.0" prefWidth="905.0">
               <columns>

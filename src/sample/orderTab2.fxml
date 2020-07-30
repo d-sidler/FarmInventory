@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="691.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.OrderController">
+    <children>
+        <HBox layoutX="292.0" layoutY="95.0" prefHeight="691.0" prefWidth="1280.0" style="-fx-background-color: #37647d;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <VBox prefHeight="691.0" prefWidth="376.0" style="-fx-background-color: #37647d;">
+                    <children>
+                  <Accordion>
+                    <panes>
+                      <TitledPane fx:id="orderAcc" animated="false" prefHeight="713.0" prefWidth="366.0" text="Bestellung">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <VBox layoutX="19.6" layoutY="19.6" prefHeight="49.0" prefWidth="322.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="10.0">
+                                       <children>
+                                          <Button mnemonicParsing="false" onAction="#newOrder" prefHeight="25.0" prefWidth="336.0" text="Neue Bestellung" />
+                                          <VBox fx:id="orderBox" prefHeight="568.0" prefWidth="336.0">
+                                             <children>
+                                                      <DatePicker fx:id="datePicker" editable="false" prefHeight="25.0" prefWidth="421.0" promptText="Ernte Datum">
+                                                          <VBox.margin>
+                                                              <Insets bottom="15.0" top="15.0" />
+                                                          </VBox.margin>
+                                                      </DatePicker>
+                                                      <ComboBox fx:id="customerDropdown" prefHeight="25.0" prefWidth="472.0" promptText="Kunde">
+                                                          <VBox.margin>
+                                                              <Insets />
+                                                          </VBox.margin>
+                                                      </ComboBox>
+                                                      <HBox prefHeight="30.0" prefWidth="306.0">
+                                                          <VBox.margin>
+                                                              <Insets bottom="15.0" top="5.0" />
+                                                          </VBox.margin>
+                                                          <children>
+                                                      <ComboBox fx:id="warenDropdown" prefWidth="150.0" promptText="Ware">
+                                                         <HBox.margin>
+                                                            <Insets top="15.0" />
+                                                         </HBox.margin>
+                                                      </ComboBox>
+                                                              <TextField fx:id="amountField" prefHeight="25.0" prefWidth="76.0" promptText="Menge">
+                                                                  <HBox.margin>
+                                                                      <Insets top="15.0" />
+                                                                  </HBox.margin>
+                                                              </TextField>
+                                                      <TextField fx:id="unitField" editable="false" prefHeight="25.0" prefWidth="67.0">
+                                                         <HBox.margin>
+                                                            <Insets top="15.0" />
+                                                         </HBox.margin>
+                                                      </TextField>
+                                                              <HBox prefHeight="30.0" prefWidth="27.0" HBox.hgrow="ALWAYS" />
+                                                              <Button mnemonicParsing="false" onAction="#addOrderEntry" prefHeight="25.0" prefWidth="34.0" text="+">
+                                                                  <HBox.margin>
+                                                                      <Insets top="15.0" />
+                                                                  </HBox.margin>
+                                                              </Button>
+                                                          </children>
+                                                      </HBox>
+                                                      <TableView fx:id="addTable" prefHeight="411.0" prefWidth="306.0">
+                                                          <columns>
+                                                              <TableColumn fx:id="addTableItem" prefWidth="173.0" text="Ware" />
+                                                              <TableColumn fx:id="addTableAmount" prefWidth="132.0" text="Menge" />
+                                                          </columns>
+                                                          <VBox.margin>
+                                                              <Insets bottom="15.0" />
+                                                          </VBox.margin>
+                                                      </TableView>
+                                                      <Button mnemonicParsing="false" onAction="#addOrder" prefHeight="25.0" prefWidth="367.0" text="Bestellung Hinzufügen">
+                                                          <VBox.margin>
+                                                              <Insets />
+                                                          </VBox.margin>
+                                                      </Button>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </TitledPane>
+                      <TitledPane animated="false" prefHeight="1102.0" prefWidth="366.0" text="Ansicht">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <VBox layoutX="-2.4000000000000004" layoutY="18.6" prefHeight="620.0" prefWidth="354.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <Label style="-fx-font-weight: bold;" text="Allgemein">
+                                             <VBox.margin>
+                                                <Insets bottom="20.0" />
+                                             </VBox.margin></Label>
+                                          <VBox prefHeight="49.0" prefWidth="335.0" style="-fx-background-color: #37647d;">
+                                             <children>
+                                                <Button mnemonicParsing="false" onAction="#hide_all" prefHeight="25.0" prefWidth="376.0" text="Alle Bestellungen Verstecken">
+                                                   <VBox.margin>
+                                                      <Insets bottom="15.0" />
+                                                   </VBox.margin>
+                                                </Button>
+                                                <Button mnemonicParsing="false" onAction="#show_all" prefHeight="25.0" prefWidth="376.0" text="Alle Bestellungen Anzeigen" />
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </VBox>
+                                          <Label style="-fx-font-weight: bold;" text="Filter">
+                                             <VBox.margin>
+                                                <Insets top="20.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <VBox prefHeight="15.0" prefWidth="335.0" style="-fx-background-color: #37647d;">
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" top="10.0" />
+                                             </VBox.margin>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                             <children>
+                                                <CheckBox fx:id="show_finished_checkbox" mnemonicParsing="false" onAction="#show_finished" text="Abgeschlossene Bestellungen anzeigen" textFill="WHITE">
+                                                   <VBox.margin>
+                                                      <Insets bottom="15.0" top="15.0" />
+                                                   </VBox.margin>
+                                                </CheckBox>
+                                             </children>
+                                          </VBox>
+                                          <VBox prefHeight="92.0" prefWidth="335.0" style="-fx-background-color: #37647d;">
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                             </VBox.margin>
+                                             <children>
+                                                <HBox prefHeight="13.0" prefWidth="335.0">
+                                                   <children>
+                                                      <DatePicker fx:id="filter_start_date" promptText="Von">
+                                                         <HBox.margin>
+                                                            <Insets right="5.0" />
+                                                         </HBox.margin>
+                                                      </DatePicker>
+                                                      <DatePicker fx:id="filter_end_date" promptText="Bis" />
+                                                   </children>
+                                                </HBox>
+                                                <CheckBox fx:id="filter_date_checkbox" mnemonicParsing="false" text="Nach Datum Filtern" textFill="WHITE">
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" top="10.0" />
+                                                   </VBox.margin>
+                                                </CheckBox>
+                                                <HBox prefHeight="100.0" prefWidth="200.0">
+                                                   <children>
+                                                      <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="166.0" text="Heute">
+                                                         <HBox.margin>
+                                                            <Insets right="5.0" />
+                                                         </HBox.margin>
+                                                      </Button>
+                                                      <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="164.0" text="Morgen">
+                                                         <HBox.margin>
+                                                            <Insets />
+                                                         </HBox.margin>
+                                                      </Button>
+                                                   </children>
+                                                   <VBox.margin>
+                                                      <Insets />
+                                                   </VBox.margin>
+                                                </HBox>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </VBox>
+                                          <VBox prefHeight="44.0" prefWidth="335.0" style="-fx-background-color: #37647d;">
+                                             <children>
+                                                <ComboBox fx:id="filter_customer" prefHeight="25.0" prefWidth="384.0" promptText="Kunde">
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </ComboBox>
+                                                <CheckBox fx:id="filter_customer_checkbox" mnemonicParsing="false" text="Nach Kunde Filtern" textFill="WHITE" />
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </VBox>
+                                          <Label style="-fx-font-weight: bold;" text="Ansichten Erstellen">
+                                             <VBox.margin>
+                                                <Insets top="20.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <VBox prefHeight="53.0" prefWidth="335.0" style="-fx-background-color: #37647d;">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                             <children>
+                                                <Button mnemonicParsing="false" onAction="#generate_harvest_plan" prefHeight="25.0" prefWidth="385.0" text="Ernteplan für angezeigte Bestellungen" />
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </VBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </TitledPane>
+                    </panes>
+                  </Accordion>
+                    </children>
+               <padding>
+                  <Insets right="10.0" />
+               </padding></VBox>
+            <TreeTableView fx:id="orderTable" prefHeight="691.0" prefWidth="905.0">
+              <columns>
+                <TreeTableColumn fx:id="orderTableCustomer" prefWidth="168.0" text="Kunde" />
+                <TreeTableColumn fx:id="orderTableItem" prefWidth="147.0" text="Ware" />
+                  <TreeTableColumn fx:id="orderTableAmount" prefWidth="186.0" text="Menge" />
+                  <TreeTableColumn fx:id="orderTableOrderDate" prefWidth="201.0" text="Bestelldatum" />
+                  <TreeTableColumn fx:id="orderTableDeliveryDate" prefWidth="192.0" text="Lieferdatum" />
+              </columns>
+            </TreeTableView>
+            </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+        </HBox>
+    </children></AnchorPane>
