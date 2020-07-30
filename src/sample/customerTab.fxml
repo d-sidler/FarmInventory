@@ -12,14 +12,14 @@
 
 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="691.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.CustomerController">
     <children>
-        <HBox layoutX="103.0" layoutY="114.0" prefHeight="691.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <HBox layoutX="103.0" layoutY="114.0" prefHeight="691.0" prefWidth="1280.0" style="-fx-background-color: #82502a;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <VBox prefHeight="691.0" prefWidth="376.0">
-                    <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                    </padding>
+                <VBox prefHeight="691.0" prefWidth="376.0" style="-fx-background-color: lightgray;">
                     <children>
-                        <HBox prefHeight="101.0" prefWidth="336.0" />
+                        <HBox prefHeight="21.0" prefWidth="338.0">
+                     <children>
+                        <ImageView fx:id="peopleImage" fitHeight="59.0" fitWidth="376.0" pickOnBounds="true" preserveRatio="true" />
+                     </children></HBox>
                         <Button mnemonicParsing="false" onAction="#addCustomerButtonPressed" prefHeight="25.0" prefWidth="345.0" text="Neuer Kunde">
                             <VBox.margin>
                                 <Insets left="15.0" right="15.0" />
@@ -65,8 +65,11 @@
                                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                             </VBox.margin>
                         </VBox>
-                    </children></VBox>
-                <TableView fx:id="customerTable" prefHeight="691.0" prefWidth="852.0" HBox.hgrow="ALWAYS">
+                    </children>
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin></VBox>
+                <TableView fx:id="customerTable" prefHeight="691.0" prefWidth="852.0" style="-fx-background-color: lightgray;" HBox.hgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="customer_column_fname" prefWidth="230.0" text="Vorname" />
                         <TableColumn fx:id="customer_column_lname" prefWidth="217.0" text="Nachname" />
@@ -74,6 +77,12 @@
                     </columns>
                 </TableView>
             </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
         </HBox>
     </children>
 </AnchorPane>

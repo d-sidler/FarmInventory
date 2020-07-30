@@ -77,6 +77,10 @@ public class CustomerController implements Initializable {
     @FXML
     private TableColumn<CustomerData, String> customer_column_email;
 
+    @FXML
+    private ImageView peopleImage;
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -91,6 +95,7 @@ public class CustomerController implements Initializable {
         loadCustomerData();
 
         user_placeholder_image.setImage(new Image("/resources/picture_placeholder.png"));
+        peopleImage.setImage(new Image("/resources/people_banner.png"));
 
         // TODO: set context menu upon right click on table row
         customerTable.setRowFactory( tv -> {
@@ -166,7 +171,7 @@ public class CustomerController implements Initializable {
             setCustomerEditable(true);
         }
         if (operationMode == OperationMode.DISPLAY) {
-            customerSaveButton.setText("Ware Bearbeiten");
+            customerSaveButton.setText("Kunde Bearbeiten");
             setCustomerEditable(false);
         }
     }
@@ -214,7 +219,7 @@ public class CustomerController implements Initializable {
         if (editable) {
             customerSaveButton.setText("Speichern");
         } else {
-            customerSaveButton.setText("Ware Bearbeiten");
+            customerSaveButton.setText("Kunde Bearbeiten");
         }
     }
 

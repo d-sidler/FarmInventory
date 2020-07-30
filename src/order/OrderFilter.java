@@ -1,4 +1,6 @@
 package order;
 
-public class OrderFilter {
+public abstract class OrderFilter {
+
+    public abstract boolean checkCondition(OrderData orderData);
 }

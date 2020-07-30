@@ -23,12 +23,16 @@
                     <fx:include source="orderTab2.fxml"/>
                 </content>
             </Tab>
-            <Tab closable="false" fx:id="customerTab" text="Kunden">
+            <Tab closable="false"
+                 fx:id="customerTab"
+                 text="Kunden">
                 <content>
                     <fx:include  source="customerTab.fxml"/>
                 </content>
             </Tab>
-            <Tab closable="false" fx:id="itemTab" text="Waren">
+            <Tab closable="false"
+                 fx:id="itemTab"
+                 text="Waren">
                 <content>
                     <fx:include  source="itemTab.fxml"/>
                 </content>

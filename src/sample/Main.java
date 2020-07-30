@@ -10,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import database.Database;
+import pdf.PDFTableWriter;
 
 public class Main extends Application {
 
@@ -31,6 +32,8 @@ public class Main extends Application {
         primaryStage.setResizable(false);
 
         primaryStage.show();
+
+
 
 
     }

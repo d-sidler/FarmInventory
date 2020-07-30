@@ -16,6 +16,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="691.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.OrderController">
     <children>
@@ -49,12 +50,12 @@
                                                               <Insets bottom="15.0" top="5.0" />
                                                           </VBox.margin>
                                                           <children>
-                                                      <ComboBox fx:id="warenDropdown" prefWidth="150.0" promptText="Ware">
+                                                      <ComboBox fx:id="warenDropdown" onAction="#itemSelected" prefWidth="150.0" promptText="Ware">
                                                          <HBox.margin>
                                                             <Insets top="15.0" />
                                                          </HBox.margin>
                                                       </ComboBox>
-                                                              <TextField fx:id="amountField" prefHeight="25.0" prefWidth="76.0" promptText="Menge">
+                                                              <TextField fx:id="amountField" onAction="#itemQuantityPressed" prefHeight="25.0" prefWidth="76.0" promptText="Menge">
                                                                   <HBox.margin>
                                                                       <Insets top="15.0" />
                                                                   </HBox.margin>
@@ -104,67 +105,47 @@
                                              <VBox.margin>
                                                 <Insets bottom="20.0" />
                                              </VBox.margin></Label>
-                                          <VBox prefHeight="49.0" prefWidth="335.0" style="-fx-background-color: #37647d;">
-                                             <children>
-                                                <Button mnemonicParsing="false" onAction="#hide_all" prefHeight="25.0" prefWidth="376.0" text="Alle Bestellungen Verstecken">
-                                                   <VBox.margin>
-                                                      <Insets bottom="15.0" />
-                                                   </VBox.margin>
-                                                </Button>
-                                                <Button mnemonicParsing="false" onAction="#show_all" prefHeight="25.0" prefWidth="376.0" text="Alle Bestellungen Anzeigen" />
-                                             </children>
-                                             <padding>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </padding>
-                                          </VBox>
+                                          <Button mnemonicParsing="false" onAction="#show_all" prefHeight="25.0" prefWidth="376.0" text="Alle Bestellungen Anzeigen" />
+                                          <Button mnemonicParsing="false" onAction="#hide_all" prefHeight="25.0" prefWidth="376.0" text="Alle Bestellungen Verstecken">
+                                             <VBox.margin>
+                                                <Insets top="5.0" />
+                                             </VBox.margin>
+                                          </Button>
                                           <Label style="-fx-font-weight: bold;" text="Filter">
                                              <VBox.margin>
                                                 <Insets top="20.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <VBox prefHeight="15.0" prefWidth="335.0" style="-fx-background-color: #37647d;">
+                                          <CheckBox fx:id="show_finished_checkbox" mnemonicParsing="false" text="Abgeschlossene Bestellungen anzeigen">
                                              <VBox.margin>
-                                                <Insets bottom="10.0" top="10.0" />
+                                                <Insets bottom="15.0" top="15.0" />
                                              </VBox.margin>
-                                             <padding>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </padding>
-                                             <children>
-                                                <CheckBox fx:id="show_finished_checkbox" mnemonicParsing="false" onAction="#show_finished" text="Abgeschlossene Bestellungen anzeigen" textFill="WHITE">
-                                                   <VBox.margin>
-                                                      <Insets bottom="15.0" top="15.0" />
-                                                   </VBox.margin>
-                                                </CheckBox>
-                                             </children>
-                                          </VBox>
-                                          <VBox prefHeight="92.0" prefWidth="335.0" style="-fx-background-color: #37647d;">
+                                          </CheckBox>
+                                          <CheckBox fx:id="filter_date_checkbox" mnemonicParsing="false" onAction="#selectDateFilter" text="Nach Datum Filtern">
                                              <VBox.margin>
-                                                <Insets bottom="10.0" />
+                                                <Insets bottom="10.0" top="5.0" />
                                              </VBox.margin>
+                                          </CheckBox>
+                                          <VBox fx:id="date_filter_box" prefHeight="54.0" prefWidth="335.0">
                                              <children>
                                                 <HBox prefHeight="13.0" prefWidth="335.0">
                                                    <children>
                                                       <DatePicker fx:id="filter_start_date" promptText="Von">
                                                          <HBox.margin>
-                                                            <Insets right="5.0" />
+                                                            <Insets bottom="5.0" right="5.0" />
                                                          </HBox.margin>
                                                       </DatePicker>
                                                       <DatePicker fx:id="filter_end_date" promptText="Bis" />
                                                    </children>
                                                 </HBox>
-                                                <CheckBox fx:id="filter_date_checkbox" mnemonicParsing="false" text="Nach Datum Filtern" textFill="WHITE">
-                                                   <VBox.margin>
-                                                      <Insets bottom="10.0" top="10.0" />
-                                                   </VBox.margin>
-                                                </CheckBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0">
+                                                <HBox prefHeight="18.0" prefWidth="335.0">
                                                    <children>
-                                                      <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="166.0" text="Heute">
+                                                      <Button mnemonicParsing="false" onAction="#setToday" prefHeight="25.0" prefWidth="164.0" text="Heute">
                                                          <HBox.margin>
                                                             <Insets right="5.0" />
                                                          </HBox.margin>
                                                       </Button>
-                                                      <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="164.0" text="Morgen">
+                                                      <Button mnemonicParsing="false" onAction="#setTomorrow" prefHeight="25.0" prefWidth="164.0" text="Morgen">
                                                          <HBox.margin>
                                                             <Insets />
                                                          </HBox.margin>
@@ -175,39 +156,38 @@
                                                    </VBox.margin>
                                                 </HBox>
                                              </children>
-                                             <padding>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </padding>
+                                             <VBox.margin>
+                                                <Insets bottom="20.0" />
+                                             </VBox.margin>
                                           </VBox>
-                                          <VBox prefHeight="44.0" prefWidth="335.0" style="-fx-background-color: #37647d;">
-                                             <children>
-                                                <ComboBox fx:id="filter_customer" prefHeight="25.0" prefWidth="384.0" promptText="Kunde">
-                                                   <VBox.margin>
-                                                      <Insets bottom="10.0" />
-                                                   </VBox.margin>
-                                                </ComboBox>
-                                                <CheckBox fx:id="filter_customer_checkbox" mnemonicParsing="false" text="Nach Kunde Filtern" textFill="WHITE" />
-                                             </children>
-                                             <padding>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </padding>
-                                          </VBox>
+                                          <CheckBox fx:id="filter_customer_checkbox" mnemonicParsing="false" onAction="#selectCustomerFilter" text="Nach Kunde Filtern">
+                                             <VBox.margin>
+                                                <Insets bottom="5.0" />
+                                             </VBox.margin>
+                                          </CheckBox>
+                                          <ComboBox fx:id="filter_customer" prefHeight="25.0" prefWidth="384.0" promptText="Kunde">
+                                             <VBox.margin>
+                                                <Insets />
+                                             </VBox.margin>
+                                          </ComboBox>
+                                          <Button mnemonicParsing="false" onAction="#applyAllFilters" prefHeight="25.0" prefWidth="660.0" text="Filter Anwenden">
+                                             <VBox.margin>
+                                                <Insets top="15.0" />
+                                             </VBox.margin>
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Button>
                                           <Label style="-fx-font-weight: bold;" text="Ansichten Erstellen">
                                              <VBox.margin>
                                                 <Insets top="20.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <VBox prefHeight="53.0" prefWidth="335.0" style="-fx-background-color: #37647d;">
+                                          <Button mnemonicParsing="false" onAction="#generate_harvest_plan" prefHeight="25.0" prefWidth="385.0" text="Ernteplan für angezeigte Bestellungen">
                                              <VBox.margin>
-                                                <Insets top="10.0" />
+                                                <Insets top="15.0" />
                                              </VBox.margin>
-                                             <children>
-                                                <Button mnemonicParsing="false" onAction="#generate_harvest_plan" prefHeight="25.0" prefWidth="385.0" text="Ernteplan für angezeigte Bestellungen" />
-                                             </children>
-                                             <padding>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </padding>
-                                          </VBox>
+                                          </Button>
                                        </children>
                                     </VBox>
                                  </children>

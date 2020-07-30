@@ -3,6 +3,7 @@ package sample;
 import customer.CustomerData;
 import dialogs.Warning;
 import impl.org.controlsfx.tools.PrefixSelectionCustomizer;
+import item.ItemCounter;
 import item.ItemData;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -18,25 +19,31 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.print.PrinterJob;
 
+import java.io.File;
 import java.net.URL;
 import java.sql.*;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.Callback;
-import order.OrderData;
-
+import javafx.util.StringConverter;
+import order.*;
 
 import database.Database;
 import org.controlsfx.control.PrefixSelectionChoiceBox;
+import pdf.PDFTableWriter;
 
+import javax.swing.*;
 import java.util.HashMap;
 
 public class OrderController implements Initializable {
@@ -52,13 +59,11 @@ public class OrderController implements Initializable {
 
     private ObservableList<OrderData> orderData;
     private HashMap<Integer, TreeItem<OrderData>> orderDataMap = new HashMap<>();
-    private List<Integer> orderIDs;
 
     private TreeItem<OrderData> rootOrder;
 
     @FXML
     private ComboBox<ItemData> warenDropdown;
-    //private AutoCompleteComboBoxListener<ItemData> aWarenDropdown = new AutoCompleteComboBoxListener<>(warenDropdown);
 
     @FXML
     private ComboBox<CustomerData> customerDropdown;
@@ -111,15 +116,87 @@ public class OrderController implements Initializable {
     @FXML
     private ComboBox<CustomerData> filter_customer;
 
+    @FXML
+    private CheckBox filter_customer_checkbox;
 
     @FXML
-    void generate_harvest_plan(ActionEvent event) {
+    private CheckBox filter_date_checkbox;
 
+    @FXML
+    private DatePicker filter_start_date;
+
+    @FXML
+    private DatePicker filter_end_date;
+
+    @FXML
+    private VBox date_filter_box;
+
+    @FXML
+    void selectDateFilter(ActionEvent event) {
+        if (filter_date_checkbox.isSelected()) {
+            date_filter_box.setVisible(true);
+        } else {
+            date_filter_box.setVisible(false);
+        }
     }
 
     @FXML
-    void apply_customer_filter(ActionEvent event) {
+    void selectCustomerFilter(ActionEvent event) {
+        if (filter_customer_checkbox.isSelected()) {
+            filter_customer.setVisible(true);
+        } else {
+            filter_customer.setVisible(false);
+        }
+    }
 
+    @FXML
+    void generate_harvest_plan(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("harvestPlan");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", ".pdf"));
+        File selectedFile = fileChooser.showSaveDialog(this.orderTable.getScene().getWindow());
+
+
+        ArrayList<ItemCounter> harvestPlan = harvestPlanFromTable();
+
+        PDFTableWriter writer = new PDFTableWriter(selectedFile.getAbsolutePath());
+        writer.setTitle("Zusammenfassung der Bestellungen");
+        writer.setTableData(harvestPlan);
+        writer.writeContent();
+
+        //writer.addTable(harvestPlan);
+
+        /*
+        for (ItemCounter i : harvestPlan) {
+            System.out.println(i.getItem() + " " + i.getAmount() + " " + i.getItem().getPriceUnit() );
+        }
+
+         */
+    }
+
+    private ArrayList<ItemCounter> harvestPlanFromTable() {
+        ArrayList<ItemCounter> harvestPlan = new ArrayList<>();
+        HashMap<Integer, Double> counter = new HashMap<>();
+
+
+        for (TreeItem<OrderData> order : rootOrder.getChildren())  {
+            for (TreeItem<OrderData> orderItem : order.getChildren()) {
+                int itemID = orderItem.getValue().getItemID().get();
+                double itemAmount = orderItem.getValue().getItemAmount().get();
+
+                if (counter.containsKey(itemID)) {
+                    double amountTmp = counter.get(itemID);
+                    counter.put(itemID, itemAmount + amountTmp);
+                } else {
+                    counter.put(itemID, itemAmount);
+                }
+            }
+        }
+
+        for (int id : counter.keySet()) {
+            harvestPlan.add(new ItemCounter(itemDataMap.get(id), counter.get(id)));
+        }
+        return harvestPlan;
     }
 
 
@@ -241,8 +318,6 @@ public class OrderController implements Initializable {
     @FXML
     void addOrderEntry(ActionEvent event) {
         ItemData item = warenDropdown.getValue();
-        System.out.println("ITEM");
-        System.out.println(item);
         Double amount = Double.parseDouble(amountField.getText());
 
         if (itemExists(item)) {
@@ -270,26 +345,48 @@ public class OrderController implements Initializable {
     }
 
     @FXML
-    void show_finished(ActionEvent event) {
+    void applyAllFilters(ActionEvent event) {
+        OrderFilterList filterList = new OrderFilterList();
+
+        if (filter_customer_checkbox.isSelected()) {
+            OrderCustomerFilter customerFilter = new OrderCustomerFilter(filter_customer.getValue());
+            filterList.add(customerFilter);
+        }
+
+        if (filter_date_checkbox.isSelected()) {
+            OrderDateFilter dateFilter = null;
+            try {
+                dateFilter = new OrderDateFilter(filter_start_date.getValue(), filter_end_date.getValue());
+            }
+            catch (InvalidDateRangeException e) {
+                Warning.display("Unzulässige Daten");
+            }
+            filterList.add(dateFilter);
+        }
+
+        showFiltered(filterList);
+
+    }
+
+    void showFiltered(OrderFilterList orderFilterList) {
 
         rootOrder = new TreeItem<>();
 
         for (TreeItem<OrderData> o : orderDataMap.values()) {
 
-            LocalDate orderDate = o.getValue().getHarvestDate().get().toLocalDate();
-            LocalDate now = LocalDate.now().minusDays(1);
+            boolean show=true;
 
-            if (orderDate.isAfter(now) || show_finished_checkbox.isSelected()) {
-                rootOrder.getChildren().add(o);
+            for (OrderFilter filter : orderFilterList.get()) {
+                if (!filter.checkCondition(o.getValue())) show=false;
             }
+
+            if (show) rootOrder.getChildren().add(o);
 
         }
 
         orderTable.setRoot(rootOrder);
         orderTableDeliveryDate.setSortType(TreeTableColumn.SortType.ASCENDING);
-        //orderTableCustomer.setSortType(TreeTableColumn.SortType.ASCENDING);
         orderTable.getSortOrder().add(orderTableDeliveryDate);
-
     }
 
 
@@ -303,6 +400,28 @@ public class OrderController implements Initializable {
         addTable.setItems(null);
 
         updateAddTable();
+    }
+
+    @FXML
+    void itemQuantityPressed(ActionEvent event) {
+        addOrderEntry(event);
+    }
+
+    @FXML
+    void itemSelected(ActionEvent event) {
+        amountField.requestFocus();
+    }
+
+    @FXML
+    void setToday(ActionEvent event) {
+        filter_start_date.setValue(LocalDate.now());
+        filter_end_date.setValue(LocalDate.now());
+    }
+
+    @FXML
+    void setTomorrow(ActionEvent event) {
+        filter_start_date.setValue(LocalDate.now().plusDays(1));
+        filter_end_date.setValue(LocalDate.now().plusDays(1));
     }
 
     private int getMaxOrderID() {
@@ -363,6 +482,26 @@ public class OrderController implements Initializable {
 
         orderAcc.setExpanded(true);
         orderBox.setVisible(false);
+
+        date_filter_box.setVisible(false);
+        filter_customer.setVisible(false);
+
+        datePicker.setConverter(
+                new StringConverter<LocalDate>() {
+                    final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd. MM. yyyy");
+                    @Override
+                    public String toString(LocalDate date) {
+                        return (date != null) ? dateFormatter.format(date) : "";
+                    }
+
+                    @Override
+                    public LocalDate fromString(String string) {
+                        return (string != null && !string.isEmpty())
+                                ? LocalDate.parse(string, dateFormatter)
+                                : null;
+                    }
+                }
+        );
 
         updateItemNames();
 
@@ -754,22 +893,7 @@ public class OrderController implements Initializable {
         }
     }
 
-    class ItemCounter {
-        private ItemData item;
-        private Double amount;
-        ItemCounter(ItemData item, Double amount) {
-            this.item = item;
-            this.amount = amount;
-        }
 
-        public ItemData getItem() {
-            return item;
-        }
-
-        public Double getAmount() {
-            return amount;
-        }
-    }
 
 
 }

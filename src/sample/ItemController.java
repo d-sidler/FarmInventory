@@ -82,6 +82,9 @@ public class ItemController implements Initializable {
     @FXML
     private Button itemSaveButton;
 
+    @FXML
+    private ImageView vegetableImage;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -99,6 +102,7 @@ public class ItemController implements Initializable {
 
 
         item_placeholder_image.setImage(new Image("/resources/picture_placeholder.png"));
+        vegetableImage.setImage(new Image("/resources/veggie_banner.png"));
 
         // TODO: set context menu upon right click on table row
         itemTable.setRowFactory( tv -> {
